@@ -12,15 +12,15 @@ The code repository for KANMTS: A multivariate time series prediction model base
 
 #### Standard MLP mixing and time mixing based on KAN
 
-![STAR](imgs/Standard MLP mixing and time mixing based on KAN.jpg)
+![Standard MLP mixing and time mixing based on KAN](imgs/Standard MLP mixing and time mixing based on KAN.jpg)
 
 #### Inference Time and memory
 
-![performance](imgs/Inference Time and memory.png)
+![Inference Time and memory](imgs/Inference Time and memory.png)
 
 #### Symbolic regression
 
-![efficiency](imgs/Symbolic regression.jpg)
+![Symbolic regression](imgs/Symbolic regression.jpg)
 
 ## Prerequisites
 
