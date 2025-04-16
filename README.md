@@ -8,19 +8,19 @@ The code repository for KANMTS: A multivariate time series prediction model base
 
 ### Main Structure
 
-![structure](imgs/Overall structure of KANMTS.jpg)
+![structure](KANMTS-main/KANMTS-main/imgs/Overall structure of KANMTS.jpg)
 
 #### Standard MLP mixing and time mixing based on KAN
 
-![Standard MLP mixing and time mixing based on KAN](imgs/Standard MLP mixing and time mixing based on KAN.jpg)
+![Standard MLP mixing and time mixing based on KAN](KANMTS-main/KANMTS-main/imgs/Standard MLP mixing and time mixing based on KAN.jpg)
 
 #### Inference Time and memory
 
-![Inference Time and memory](imgs/Inference Time and memory.png)
+![Inference Time and memory](KANMTS-main/KANMTS-main/imgs/Inference Time and memory.png)
 
 #### Symbolic regression
 
-![Symbolic regression](imgs/Symbolic regression.jpg)
+![Symbolic regression](KANMTS-main/KANMTS-main/imgs/Symbolic regression.jpg)
 
 ## Prerequisites
 
