@@ -30,7 +30,7 @@ numpy==1.22.4
 
 pandas==1.2.4
 
-torch==1.10.0+cu111
+torch==2.3.1+cu121
 
 ## Datasets
 
