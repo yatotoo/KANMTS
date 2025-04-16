@@ -1,33 +1,26 @@
-KANMTS: A multivariate time series prediction model based on the KAN network
-The code repository for KANMTS: A multivariate time series prediction model based on the KAN network in PyTorch. A scalable pure KAN model that achieves state-of-the-art performance on multivariate time series forecasting benchmarks.
-
 #  KANMTS: A multivariate time series prediction model based on the KAN network
 
 ![GitHub stars](https://img.shields.io/github/stars/Secilia-Cxy/SOFTS.svg) ![Visits Badge](https://badges.pufler.dev/visits/Secilia-Cxy/SOFTS)
 
 
-The code repository for [SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion](https://arxiv.org/pdf/2404.14197.pdf) in PyTorch. A scalable pure KAN model that achieves state-of-the-art performance on multivariate time series forecasting benchmarks. 
-
-[[中文介绍]](https://mp.weixin.qq.com/s/KRolsx7OVYV-JS-MatpH1Q) [[Medium]](https://towardsdatascience.com/softs-the-latest-innovation-in-time-series-forecasting-dbc82553dd76)
-[[TowardsAI]](https://towardsai.net/p/l/softs-efficient-multivariate-time-series-forecasting-with-series-core-fusion)
-
+The code repository for KANMTS: A multivariate time series prediction model based on the KAN network in PyTorch. A scalable pure KAN model that achieves state-of-the-art performance on multivariate time series forecasting benchmarks. 
 
 
 ### Main Structure
 
-![structure](imgs/structure.png)
+![structure](imgs/Overall structure of KANMTS.jpg)
 
-#### Star Aggregate-Redistribute Module (STAR)
+#### Standard MLP mixing and time mixing based on KAN
 
-![STAR](imgs/STAR.png)
+![STAR](imgs/Standard MLP mixing and time mixing based on KAN.jpg)
 
-#### Performance Comparison
+#### Inference Time and memory
 
-![performance](imgs/performance.png)
+![performance](imgs/Inference Time and memory.png)
 
-#### Efficiency Comparison
+#### Symbolic regression
 
-![efficiency](imgs/efficiency.png)
+![efficiency](imgs/Symbolic regression.jpg)
 
 ## Prerequisites
 
@@ -43,7 +36,7 @@ torch==1.10.0+cu111
 
 You can directly download the datasets used in the paper from [Google Drive](https://drive.google.com/drive/folders/1QPM7MMKlzVffdzbGGkzARDuIqiYRed_f?usp=drive_link) or [NJU Box](https://box.nju.edu.cn/d/abc2bbd7cff6461eb4da/). 
 
-Once downloaded, place the datasets under folder `dataset/`, like `dataset/ETT-small`, `dataset/traffic`, etc.
+Once downloaded, place the datasets under folder `dataset/`, like `dataset/ETT-small`, `dataset/weather`, etc.
 
 ## Run on your own dataset
 
@@ -68,11 +61,11 @@ We have provided a custom exp class in `exp/exp_custom.py` and a guidance Jupyte
 
 ## Scripts
 
-To reproduce the main results in Table 2, run the script files under folder `scripts/long_term_forecast`.
+To reproduce the main results , run the script files under folder `scripts/long_term_forecast`.
 
-For example, to reproduce the results of SOFTS on ETTm1 dataset, run the following command:
+For example, to reproduce the results of KANMTS on ETTm1 dataset, run the following command:
 
-```sh scripts/long_term_forecast/ETT_script/SOFTS_ETTm1.sh```
+```sh scripts/long_term_forecast/ETT_script/KANMTS_ETTm1.sh```
 
 ## Acknowledgement
 
