@@ -8,7 +8,7 @@ The code repository for KANMTS: A multivariate time series prediction model base
 
 ### Main Structure
 
-![structure](https://github.com/qq234567890lyj/KANMTS/blob/main/KANMTS-main/KANMTS-main/imgs/Overall%20structure%20of%20KANMTS.jpg)
+![structure](https://github.com/qq234567890lyj/KANMTS/blob/main/KANMTS-main/KANMTS-main/imgs/KANMTS.tif)
 
 #### Standard MLP mixing and time mixing based on KAN
 
