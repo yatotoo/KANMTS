@@ -343,42 +343,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         predicted_values = predictions[1, :, 0]
         true_values = ground_truth[1, :, 0]
 
-        # import matplotlib.pyplot as plt
-        import matplotlib.pyplot as plt
-        plt.rcParams['font.sans-serif'] = ['Times New Roman']
-        plt.rcParams['axes.unicode_minus'] = False
-
-        lines = plt.plot(true_values, label='True_values')
-        lines = plt.plot(predicted_values, label='Predicted_values')
-
-        # Set font size
-        plt.rcParams['font.size'] = 18
-
-        legend = plt.legend(fontsize=16)
-        for text in legend.get_texts():
-            text.set_fontsize(16)
-
-        plt.xlabel('Time', fontsize=18)
-        plt.ylabel('Value', fontsize=18)
-        plt.title('KANMTS-ETTm1', fontsize=18)
-
-        # Get current axis object
-        ax = plt.gca()
-        # Set axis tick font size
-        ax.tick_params(axis='both', labelsize=18)
-
-        # # Adjust left margin to move the chart to the right
-        plt.subplots_adjust(left=0.2)  # Try different values
-        # # Adjust bottom margin to move the chart up
-        plt.subplots_adjust(bottom=0.2)  # Try different values
-
-        # # Set subplot margins to 0 to make the image fill the entire plotting area
-        # plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
-
-        # save the plot to file
-        plt.savefig('./imgs/KANMTS-ETTm1', bbox_inches='tight')  # 指定路径和文件名
-
-        plt.show()
+      
 
         # Save results to file
         with open('./result/results.txt', 'a', encoding='utf-8', errors='replace') as file:
