@@ -149,72 +149,7 @@ if __name__ == '__main__':
 
         torch.cuda.empty_cache()
 
-    # def train(args=args):
-    #     #
-    #     learning_rates = [0.0001, 0.0003, 0.0005]  #
-    #     batch_sizes = [16,32, 64]  #
-    #     dmodel = [64,128,256,512,2048]
-    #     dcore = [64, 128, 256, 512, 2048]
-    #     dff = [64, 128, 256, 512, 2048]
-    #     grid_sizes = [4,5,6,7,10]  #
-    #     pred_len = [96,196,336,720]
-    #
-    #     for el in [1,2,3,4,5]:
-    #         for pred_len in pred_len:
-    #             for lr in learning_rates:
-    #                 for bs in batch_sizes:
-    #                     for dmodel in  dmodel:
-    #                         for dcore in dcore:
-    #                             for dff in dff:
-    #                                 for grid_sizes in grid_sizes:
-    #                                     args.pred_len = pred_len
-    #                                     args.grid_size = grid_sizes
-    #                                     args.e_layers = el
-    #                                     args.learning_rate = lr
-    #                                     args.batch_size = bs
-    #                                     args.d_model = dmodel
-    #                                     args.d_core = dcore
-    #                                     args.d_ff = dff
-    #                                     setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_dc{}_el{}_dl{}_df{}_fc{}_dt{}_{}_nl{}_hd{}_bs{}_lr{}_te{}_gs{}'.format(
-    #                                         args.task_name,
-    #                                         args.model_id,
-    #                                         args.model,
-    #                                         args.data,
-    #                                         args.features,
-    #                                         args.seq_len,
-    #                                         args.label_len,
-    #                                         args.pred_len,
-    #                                         args.d_model,
-    #                                         args.d_core,
-    #                                         args.e_layers,
-    #                                         args.d_layers,
-    #                                         args.d_ff,
-    #                                         args.factor,
-    #                                         args.distil,
-    #                                         args.des,
-    #                                         args.num_layers,
-    #                                         args.hidden_dim,
-    #                                         args.batch_size,
-    #                                         args.learning_rate,
-    #                                         args.train_epochs,
-    #                                         args.grid_size
-    #                                     )
-    #
-    #                                     exp = Exp(args)  # set experiments
-    #
-    #                                     with open('./result/results.txt', 'a', encoding='utf-8', errors='replace') as file:
-    #                                         file.write(f'setting: {setting}\n')
-    #
-    #                                     print('>>>>>>>start training : {}>>>>>>>>>>>>>>>>>>>>>>>>>>'.format(setting))
-    #                                     exp.train(setting)
-    #
-    #
-    #
-    #
-    #                                     print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
-    #                                     exp.test(setting)
-    #
-    #                                     torch.cuda.empty_cache()
+  
 
     if args.is_training:
         train(args)
@@ -242,7 +177,7 @@ if __name__ == '__main__':
         exp.test(setting, test=1)
         torch.cuda.empty_cache()
 
-        # 查看GPU使用情况
+       
         print(torch.cuda.memory_allocated())
         print(torch.cuda.memory_reserved())
 
