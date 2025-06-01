@@ -47,8 +47,7 @@ class Dataset_ETT_hour(Dataset):
         df_raw = pd.read_csv(os.path.join(self.root_path,
                                           self.data_path))
 
-        # border1s中的三个值可能分别对应训练集、验证集和测试集的起始位置，而border2s中的三个值则分别对应这三个数据集的结束位置。
-        # 通过这种方式，可以从原始数据集中提取出不同部分的数据用于不同的目的，
+      
 
         border1s = [0, 12 * 30 * 24 - self.seq_len, 12 * 30 * 24 + 4 * 30 * 24 - self.seq_len]  # [0,8544,11424]
         border2s = [12 * 30 * 24, 12 * 30 * 24 + 4 * 30 * 24, 12 * 30 * 24 + 8 * 30 * 24]  # [8640,11520,14400]
@@ -77,7 +76,7 @@ class Dataset_ETT_hour(Dataset):
             df_stamp['hour'] = df_stamp.date.apply(lambda row: row.hour, 1)
             data_stamp = df_stamp.drop(['date'], 1).values  # (2976,4)
         elif self.timeenc == 1:
-            # (2976,4),把时间列转换成4个维度的特征
+           
             data_stamp = time_features(pd.to_datetime(df_stamp['date'].values), freq=self.freq)
             data_stamp = data_stamp.transpose(1, 0)
 
@@ -236,9 +235,7 @@ class Dataset_Custom(Dataset):
         cols.remove(self.target)
         cols.remove('date')
         df_raw = df_raw[['date'] + cols + [self.target]]
-        # num_train = int(len(df_raw) * 0.6)
-        # num_test = int(len(df_raw) * 0.3)
-        # 正确的划分方式应该是：
+       
         num_train = int(len(df_raw) * 0.7)
         num_test = int(len(df_raw) * 0.2)
         num_vali = len(df_raw) - num_train - num_test
