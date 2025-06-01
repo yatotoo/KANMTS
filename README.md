@@ -56,8 +56,7 @@ If you wish to utilize your own datasets, please follow these steps:
 
 Refer to the examples in `scripts/long_term_forecast` for guidance on how to integrate your custom dataset into the existing scripts.
 
-### Choice 2: Use the provided API
-We have provided a custom exp class in `exp/exp_custom.py` and a guidance Jupyter notebook `run_on_your_own_dataset.ipynb` to help you run the model on your own dataset.
+
 
 ## Scripts
 
