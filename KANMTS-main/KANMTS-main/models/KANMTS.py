@@ -39,7 +39,7 @@ class NewGELU(nn.Module):
         )
 
 
-# Used for mixing and transforming features of input data in neural networks to better capture patterns in the data.
+
 class TokenMixingKAN(nn.Module):
     def __init__(self, n_tokens, n_channel, n_hidden, n_hidden1=20):
         super().__init__()
@@ -48,11 +48,11 @@ class TokenMixingKAN(nn.Module):
         self.kan2 = KANLinear(n_hidden, n_tokens)
         self.activations = None
 
-    # 32,137,128
-    def forward(self, X):  # 32 11 512
+   
+    def forward(self, X): 
         z = X.permute(0, 2, 1)
         z = self.layer_norm(z)  # LayerNorm normalizes along the last dimension (channel dimension), processing each channel independently. This keeps the shape of z as (32, 96, 11).
-        z = z.permute(0, 2, 1)  # 32 11 512
+        z = z.permute(0, 2, 1) 
         z = self.kan1(z)
         z = self.kan2(z)
 
@@ -61,7 +61,7 @@ class TokenMixingKAN(nn.Module):
         return U
 
 
-class ChannelMixingKAN(nn.Module):  # 32,11,512
+class ChannelMixingKAN(nn.Module): 
     def __init__(self, n_tokens, n_channel, n_hidden, n_hidden1=20):
         super().__init__()
         self.layer_norm = nn.LayerNorm([n_tokens, n_channel])
@@ -69,9 +69,9 @@ class ChannelMixingKAN(nn.Module):  # 32,11,512
         self.kan2 = KANLinear(n_hidden, n_channel)
         self.activations = None
 
-    def forward(self, U):  # 32,11,512
+    def forward(self, U): 
         z = U.permute(0, 2, 1)
-        z = self.layer_norm(z)  # 32,512,11
+        z = self.layer_norm(z) 
         z = self.kan1(z)
         z = self.kan2(z)
         z = z.permute(0, 2, 1)
@@ -82,7 +82,7 @@ class ChannelMixingKAN(nn.Module):  # 32,11,512
 
 
 class Mixer2dTriUKAN(nn.Module):
-    def __init__(self, time_steps, channels, d_core, grid_size, hidden_dim, dropout):  # 256,11
+    def __init__(self, time_steps, channels, d_core, grid_size, hidden_dim, dropout): 
         super(Mixer2dTriUKAN, self).__init__()
 
         self.net1 = nn.Sequential(
@@ -100,39 +100,37 @@ class Mixer2dTriUKAN(nn.Module):
         self.TokenMixingKAN = TokenMixingKAN(d_core, channels + 4, hidden_dim)
         self.ChannelMixingKAN = ChannelMixingKAN(d_core, channels + 4, hidden_dim)
 
-        # PEMS and Solar datasets have different input formats and require appropriate processing.
-        # self.TokenMixingKAN = TokenMixingKAN(d_core, channels, hidden_dim)
-        # self.ChannelMixingKAN = ChannelMixingKAN(time_steps, channels, hidden_dim)
+       
 
-    def forward(self, inputs, *args, **kwargs):  # (32,11,512)
+    def forward(self, inputs, *args, **kwargs): 
         batch_size, channels, d_series = inputs.shape
 
         combined_mean = self.net1(inputs)  # Fully connected layer
 
         # Time dimension processing
-        TokenMixing = self.TokenMixingKAN(combined_mean)  # Extracts dependencies between different time points for each variable
+        TokenMixing = self.TokenMixingKAN(combined_mean) 
 
         x = TokenMixing + combined_mean
 
-        # Correct
+       
         ChannelMixing = self.ChannelMixingKAN(x)
 
         y = ChannelMixing + x  # (32,11,512)
 
         z = self.net2(y)
 
-        return z, None  # Returns the result of residual connection after x and channel mixing y are added. # (1026,8,5) (1026,5)
+        return z, None 
 
 
-# This module is designed to perform operations of a Multi-Layer Perceptron (MLP), including linear transformation, normalization, and optional dropout, typically used for feature extraction and transformation.
-class MixerBlock1(nn.Module):  # This module uses MLP
+
+class MixerBlock1(nn.Module): 
     def __init__(self, time_steps, channels, hidden_dim, dropout=0.0):
         super(MixerBlock1, self).__init__()
         self.time_steps = time_steps
         self.dropout = dropout
         self.LN_1 = nn.LayerNorm([time_steps, channels])
-        # A linear layer dense_1 (mapping input dimension to hidden layer), an activation function LN, and another linear layer dense_2 (mapping hidden layer to output dimension).
-        self.dense_1 = nn.Linear(time_steps, hidden_dim)  # 5-dimensional input and output
+      
+        self.dense_1 = nn.Linear(time_steps, hidden_dim) 
         self.LN = acv
         self.dense_2 = nn.Linear(hidden_dim, time_steps)
 
@@ -145,7 +143,7 @@ class MixerBlock1(nn.Module):  # This module uses MLP
         x = self.LN(x)
         if self.dropout != 0.0:
             x = F.dropout(x, p=self.dropout)
-            # Another linear transformation through dense_2.
+           
         x = self.dense_2(x)  # (1026,8,5)
         if self.dropout != 0.0:
             x = F.dropout(x, p=self.dropout)
@@ -162,8 +160,8 @@ class MixerBlock2(nn.Module):  # This module uses MLP
 
         self.LN_2 = nn.LayerNorm([time_steps, channels])
 
-        # A linear layer dense_1 (mapping input dimension to hidden layer), an activation function LN, and another linear layer dense_2 (mapping hidden layer to output dimension).
-        self.dense_1 = nn.Linear(channels, hidden_dim)  # 5-dimensional input and output
+      
+        self.dense_1 = nn.Linear(channels, hidden_dim) 
         self.LN = acv
         self.dense_2 = nn.Linear(hidden_dim, channels)
 
@@ -172,8 +170,7 @@ class MixerBlock2(nn.Module):  # This module uses MLP
         x = self.LN_2(x)
 
         x = self.dense_1(x)  # (32,512,11)
-        # Activation through LN. There seems to be an issue here,
-        # LN appears to be incorrectly initialized, should be an activation function, but is written as acv. Typically, activation functions can be ReLU, sigmoid, tanh, etc.
+       
         x = self.LN(x)
         if self.dropout != 0.0:
             x = F.dropout(x, p=self.dropout)
@@ -188,7 +185,7 @@ class MixerBlock2(nn.Module):  # This module uses MLP
 
 
 class Mixer2dTriUMLP(nn.Module):
-    def __init__(self, time_steps, channels, d_core, gri_size, hidden_dim, num_layers, dropout=0.1):  # 256,11
+    def __init__(self, time_steps, channels, d_core, gri_size, hidden_dim, num_layers, dropout=0.1): 
         super(Mixer2dTriUMLP, self).__init__()
 
         # MLP-Mixer
@@ -206,17 +203,13 @@ class Mixer2dTriUMLP(nn.Module):
         self.timeMixer = MixerBlock1(d_core, channels + 4, hidden_dim)
         self.channelMixer = MixerBlock2(d_core, channels + 4, hidden_dim)
 
-        # PEMS and Solar datasets have different input formats and require appropriate processing.
-        # self.timeMixer = MixerBlock1(d_core, channels, hidden_dim)
-        # self.channelMixer = MixerBlock2(d_core, channels, hidden_dim)
+      
 
-    def forward(self, inputs, *args, **kwargs):  # (32,11,512)
+    def forward(self, inputs, *args, **kwargs):  
         batch_size, channels, d_series = inputs.shape
 
-        # MLP processing
-        # (32,11,512) captures global information
-
-        combined_mean = self.gen1(inputs)  # (32,11,512)
+      
+        combined_mean = self.gen1(inputs)  
 
         # Time dimension processing
         TokenMixing = self.timeMixer(combined_mean)
@@ -228,7 +221,7 @@ class Mixer2dTriUMLP(nn.Module):
 
         y = x + channel
 
-        # combined_mean_cat = F.gelu(self.gen3(combined_mean_cat))  # (32,11,512)
+      
         z = self.gen2(y)  # 32,137,256
 
         return z, None
@@ -264,8 +257,7 @@ class Model(nn.Module):
         # Decoder  Mapping output
         self.projection = nn.Linear(configs.d_model, configs.pred_len, bias=True)
 
-    # x_enc（32,96,7 ），x_mark_enc（32,96,4 ）
-    # 32,96,137
+    
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
         # Filter data for each batch and channel
 
@@ -278,17 +270,15 @@ class Model(nn.Module):
 
         _, _, N = x_enc.shape
 
-        # ETT（32,11,512）Value embedding
-        # PEMS (32,358,512)
-        # SOlar(32,137,512)
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)  # Embedding layer transforms data dimension to 512
+     
+        enc_out = self.enc_embedding(x_enc, x_mark_enc) 
 
-        enc_out, attns = self.encoder(enc_out, attn_mask=None)  # enc_out(32,11,512)
+        enc_out, attns = self.encoder(enc_out, attn_mask=None)  
 
         # Restore to original input format
         # batch_size, d_series, channels = dec_out.shape
-        dec_out = self.projection(enc_out).permute(0, 2, 1)[:, :, :N]  # （32,96,7）
-        # dec_out = self.kan(enc_out).permute(0, 2, 1)[:, :, :N]  # （32,96,7）
+        dec_out = self.projection(enc_out).permute(0, 2, 1)[:, :, :N] 
+        # dec_out = self.kan(enc_out).permute(0, 2, 1)[:, :, :N]  
 
         # De-Normalization from Non-stationary Transformer
         if self.use_norm:
